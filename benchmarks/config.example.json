@@ -1,0 +1,23 @@
+{
+  "$comment": "Copy to config.json and fill in real paths. processNames is a fallback used only when tree-walking from the launched PID is unavailable (e.g. attaching to an already-running app).",
+  "runs": 5,
+  "sampleSeconds": 30,
+  "sampleIntervalMs": 1000,
+  "settleSeconds": 5,
+  "apps": [
+    {
+      "name": "Spotlite",
+      "exe": "C:\\Users\\YOU\\AppData\\Local\\Spotlite\\Spotlite.exe",
+      "processNames": ["Spotlite", "msedgewebview2"],
+      "installDir": "C:\\Users\\YOU\\AppData\\Local\\Spotlite",
+      "installer": "..\\src-tauri\\target\\release\\bundle\\nsis\\Spotlite_0.1.0_x64-setup.exe"
+    },
+    {
+      "name": "Spotify",
+      "exe": "C:\\Users\\YOU\\AppData\\Roaming\\Spotify\\Spotify.exe",
+      "processNames": ["Spotify"],
+      "installDir": "C:\\Users\\YOU\\AppData\\Roaming\\Spotify",
+      "installer": null
+    }
+  ]
+}
