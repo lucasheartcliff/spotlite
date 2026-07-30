@@ -1,0 +1,366 @@
+:root {
+  --bg: #121212;
+  --bg-elevated: #181818;
+  --bg-highlight: #282828;
+  --text: #ffffff;
+  --text-subtle: #b3b3b3;
+  --accent: #1db954;
+  --sidebar-w: 240px;
+  --nowplaying-h: 88px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  height: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.app {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.splash,
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* --- Login --- */
+.login-card {
+  text-align: center;
+  max-width: 360px;
+}
+.login-card h1 {
+  font-size: 3rem;
+  margin: 0 0 0.25rem;
+}
+.tagline {
+  color: var(--text-subtle);
+  margin-bottom: 2rem;
+}
+.fineprint,
+.warn {
+  color: var(--text-subtle);
+  font-size: 0.85rem;
+  margin-top: 1rem;
+}
+.warn {
+  color: #f0c674;
+}
+
+/* --- Shell layout --- */
+.shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  grid-template-rows: 1fr var(--nowplaying-h);
+  grid-template-areas:
+    "sidebar content"
+    "nowplaying nowplaying";
+  height: 100vh;
+}
+.sidebar {
+  grid-area: sidebar;
+  background: #000;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.content {
+  grid-area: content;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #2a2a2a 0%, var(--bg) 220px);
+}
+.nowplaying {
+  grid-area: nowplaying;
+}
+
+/* --- Sidebar --- */
+.brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 0.25rem 0.75rem 1rem;
+}
+.sidebar .nav button,
+.playlists button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  color: var(--text-subtle);
+}
+.sidebar .nav button:hover,
+.playlists button:hover {
+  color: var(--text);
+}
+.sidebar .nav button.active,
+.playlists button.active {
+  color: var(--text);
+  background: var(--bg-highlight);
+}
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.playlists {
+  margin-top: 1rem;
+  overflow-y: auto;
+  flex: 1;
+}
+.section-label {
+  color: var(--text-subtle);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0.75rem;
+}
+.account {
+  padding: 0.75rem;
+  border-top: 1px solid var(--bg-highlight);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+.link {
+  background: none;
+  border: none;
+  color: var(--text-subtle);
+  text-decoration: underline;
+}
+
+/* --- Views --- */
+.view {
+  padding: 1.5rem 2rem 3rem;
+}
+.view h1 {
+  margin: 0.25rem 0;
+}
+.subtle {
+  color: var(--text-subtle);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.card {
+  background: var(--bg-elevated);
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: left;
+  transition: background 0.2s;
+}
+.card:hover {
+  background: var(--bg-highlight);
+}
+.card img,
+.art-placeholder {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--bg-highlight);
+  margin-bottom: 0.75rem;
+}
+.card-title {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-sub {
+  color: var(--text-subtle);
+  font-size: 0.85rem;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 420px;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  border: none;
+  background: #fff;
+  color: #000;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.playlist-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* --- Track list --- */
+.tracklist {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tracklist th {
+  text-align: left;
+  color: var(--text-subtle);
+  font-weight: 400;
+  font-size: 0.8rem;
+  border-bottom: 1px solid var(--bg-highlight);
+  padding: 0.5rem;
+}
+.tracklist td {
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+.tracklist tbody tr:hover {
+  background: var(--bg-highlight);
+}
+.tracklist .num {
+  width: 40px;
+  color: var(--text-subtle);
+}
+.tracklist .play-cell {
+  display: none;
+  background: none;
+  border: none;
+}
+.tracklist tr:hover .play-cell {
+  display: inline;
+}
+.tracklist tr:hover .idx {
+  display: none;
+}
+.tracklist .title {
+  color: var(--text);
+}
+.tracklist .artist,
+.tracklist .album {
+  color: var(--text-subtle);
+  font-size: 0.85rem;
+}
+.tracklist .dur {
+  color: var(--text-subtle);
+  text-align: right;
+  width: 60px;
+}
+
+/* --- Buttons --- */
+.primary {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.6rem;
+  font-weight: 700;
+}
+.primary:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* --- Now playing bar --- */
+.nowplaying {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+  background: var(--bg-elevated);
+  border-top: 1px solid var(--bg-highlight);
+  padding: 0 1rem;
+  gap: 1rem;
+}
+.np-track {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.np-cover {
+  width: 56px;
+  height: 56px;
+  border-radius: 4px;
+}
+.np-meta {
+  min-width: 0;
+}
+.np-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.np-artist {
+  color: var(--text-subtle);
+  font-size: 0.85rem;
+}
+.np-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.np-buttons button {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  padding: 0.25rem 0.6rem;
+  color: var(--text-subtle);
+}
+.np-buttons .np-play {
+  color: var(--text);
+  font-size: 1.4rem;
+}
+.np-seek {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+}
+.np-seek input {
+  flex: 1;
+}
+.np-volume {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+input[type="range"] {
+  accent-color: var(--accent);
+}
+
+/* --- Toast --- */
+.toast {
+  position: fixed;
+  bottom: calc(var(--nowplaying-h) + 1rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-highlight);
+  color: var(--text);
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}

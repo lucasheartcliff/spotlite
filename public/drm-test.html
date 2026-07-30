@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Spotlite — Widevine / EME smoke test</title>
+    <style>
+      body {
+        font-family: -apple-system, Segoe UI, sans-serif;
+        background: #121212;
+        color: #fff;
+        max-width: 640px;
+        margin: 3rem auto;
+        padding: 0 1rem;
+      }
+      .ok {
+        color: #1db954;
+      }
+      .fail {
+        color: #ff5252;
+      }
+      pre {
+        background: #181818;
+        padding: 1rem;
+        border-radius: 6px;
+        white-space: pre-wrap;
+      }
+      h1 {
+        font-size: 1.4rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      M0 de-risking page. Load this inside the WebView2 build (dev: navigate to
+      http://localhost:1420/drm-test.html; packaged: temporarily point the
+      window at this file) BEFORE building playback UI. If Widevine is not
+      available here, the Web Playback SDK route cannot work and the plan's
+      fallback (a native/librespot backend) must be revisited.
+    -->
+    <h1>Widevine / EME smoke test</h1>
+    <p>
+      Verifies the webview can negotiate the Widevine Content Decryption Module,
+      which the Spotify Web Playback SDK requires.
+    </p>
+    <div id="result">Testing…</div>
+    <pre id="detail"></pre>
+
+    <script>
+      const result = document.getElementById("result");
+      const detail = document.getElementById("detail");
+
+      async function run() {
+        if (!("requestMediaKeySystemAccess" in navigator)) {
+          result.innerHTML =
+            '<span class="fail">EME is not available (navigator.requestMediaKeySystemAccess missing).</span>';
+          return;
+        }
+
+        const config = [
+          {
+            initDataTypes: ["cenc"],
+            audioCapabilities: [
+              { contentType: 'audio/mp4; codecs="mp4a.40.2"' },
+            ],
+            videoCapabilities: [
+              { contentType: 'video/mp4; codecs="avc1.42E01E"' },
+            ],
+          },
+        ];
+
+        try {
+          const access = await navigator.requestMediaKeySystemAccess(
+            "com.widevine.alpha",
+            config,
+          );
+          const mediaKeys = await access.createMediaKeys();
+          result.innerHTML =
+            '<span class="ok">✔ Widevine is available. The Web Playback SDK route is viable in this webview.</span>';
+          detail.textContent =
+            "keySystem: " +
+            access.keySystem +
+            "\ncreateMediaKeys: ok (" +
+            (mediaKeys ? "instance created" : "no instance") +
+            ")";
+        } catch (e) {
+          result.innerHTML =
+            '<span class="fail">✘ Widevine NOT available in this webview. Web Playback SDK will not play audio here.</span>';
+          detail.textContent = String(e && e.message ? e.message : e);
+        }
+      }
+
+      run();
+    </script>
+  </body>
+</html>
